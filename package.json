@@ -1,7 +1,7 @@
 {
   "name": "cys-cli",
   "version": "1.0.0",
-  "description": "Experimental unofficial command lien interface for chooseyourstory.com",
+  "description": "Experimental unofficial command line interface for chooseyourstory.com",
   "main": "app.js",
   "scripts": {
     "start": "node app",
