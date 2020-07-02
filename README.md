@@ -1,2 +1,2 @@
 # cys-cli
-Experimental unofficial command lien interface for chooseyourstory.com
+Experimental unofficial command lien interface for [chooseyourstory.com](http://chooseyourstory.com/)
