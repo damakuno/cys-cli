@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const htmlToText = require('html-to-text');
+const { htmlToText } = require('html-to-text');
 const inquirer = require('inquirer');
 const Entities = require('html-entities').AllHtmlEntities;
 
@@ -7,8 +7,7 @@ const entities = new Entities();
 
 let textOutput = '';
 let storyChoices = [];
-const c =
-{
+const c = {
     Reset: "\x1b[0m",
     Bright: "\x1b[1m",
     Dim: "\x1b[2m",
@@ -35,7 +34,7 @@ const c =
     BgCyan: "\x1b[46m",
     BgWhite: "\x1b[47m",
 }
-const render = async function (page) {
+const render = async function(page) {
     await page.waitForSelector('body > div:nth-child(3)');
     // const elements = await page.$$('body > div:nth-child(3) p');
     // textOutput = '';
@@ -53,9 +52,9 @@ const render = async function (page) {
         .replace(/<\/u>/g, `<\/u>${c.Reset}`)
         .replace(/[“|”]([^”]*)[“|”]/g, m =>
             `${c.FgYellow}"${m.substring(1, m.length - 1)}"${c.Reset}`)
-    // .replace(/“/g, `${c.FgYellow}"`)
-    // .replace(/”/g, `"${c.Reset}`)
-    // .replace(/[A-Z]{2,}/g, m => `${c.FgMagenta}${m}${c.Reset}`);
+        // .replace(/“/g, `${c.FgYellow}"`)
+        // .replace(/”/g, `"${c.Reset}`)
+        // .replace(/[A-Z]{2,}/g, m => `${c.FgMagenta}${m}${c.Reset}`);
 
     await page.waitForSelector('body > div:nth-child(3) ul');
     const choiceList = await page.$$('body > div:nth-child(3) ul li');
@@ -81,14 +80,12 @@ const render = async function (page) {
     }
     console.info(`${c.Underscore}%s${c.Reset}`, headerText);
     console.info(`${c.FgWhite}%s${c.Reset}`, entities.decode(htmlToText.fromString(textOutput)));
-    inquirer.prompt([
-        {
-            type: 'list',
-            name: 'storyChoice',
-            message: 'Your choice?',
-            choices: storyChoices
-        }
-    ]).then(async answers => {
+    inquirer.prompt([{
+        type: 'list',
+        name: 'storyChoice',
+        message: 'Your choice?',
+        choices: storyChoices
+    }]).then(async answers => {
         // console.info(`You chose: ${answers.storyChoice}`);
         if (answers.storyChoice === 'Exit') {
             // process.kill(process.pid, 'SIGTERM');
@@ -106,7 +103,7 @@ const render = async function (page) {
 puppeteer.launch({
     headless: true
 }).then(async browser => {
-    process.on('SIGTERM', async () => {
+    process.on('SIGTERM', async() => {
         await browser.close();
         console.log('Process terminated...');
     });
@@ -114,7 +111,7 @@ puppeteer.launch({
     try {
         const page = await browser.newPage();
         await page.setViewport({ width: 1280, height: 800 })
-        //10638
+            //10638
         await page.goto('https://chooseyourstory.com/story/viewer/default.aspx?StoryId=10638');
         await render(page);
     } catch (err) {
@@ -122,4 +119,3 @@ puppeteer.launch({
         process.kill(process.pid, 'SIGTERM');
     }
 });
-
