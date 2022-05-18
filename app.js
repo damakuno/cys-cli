@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const { htmlToText } = require('html-to-text');
+const { convert } = require('html-to-text');
 const inquirer = require('inquirer');
 const Entities = require('html-entities').AllHtmlEntities;
 
@@ -79,7 +79,7 @@ const render = async function(page) {
         headerText = await page.evaluate(header => header.innerHTML, header);
     }
     console.info(`${c.Underscore}%s${c.Reset}`, headerText);
-    console.info(`${c.FgWhite}%s${c.Reset}`, entities.decode(htmlToText.fromString(textOutput)));
+    console.info(`${c.FgWhite}%s${c.Reset}`, entities.decode(convert(textOutput, {})));
     inquirer.prompt([{
         type: 'list',
         name: 'storyChoice',
@@ -101,7 +101,9 @@ const render = async function(page) {
 }
 
 puppeteer.launch({
-    headless: true
+    headless: true,
+    executablePath: '/bin/chromium',
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
 }).then(async browser => {
     process.on('SIGTERM', async() => {
         await browser.close();
