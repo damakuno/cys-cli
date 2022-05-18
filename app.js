@@ -79,7 +79,7 @@ const render = async function(page) {
         headerText = await page.evaluate(header => header.innerHTML, header);
     }
     console.info(`${c.Underscore}%s${c.Reset}`, headerText);
-    console.info(`${c.FgWhite}%s${c.Reset}`, entities.decode(convert(textOutput, {})));
+    console.info(`${c.FgWhite}%s${c.Reset}`, entities.decode(convert(textOutput, { wordwrap: (process.stdout.columns || 200 )})));
     inquirer.prompt([{
         type: 'list',
         name: 'storyChoice',
